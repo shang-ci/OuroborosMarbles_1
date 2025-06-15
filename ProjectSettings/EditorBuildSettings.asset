@@ -8,4 +8,13 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/First.unity
     guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 1
+    path: Assets/Scenes/Ytt--Guidance.unity
+    guid: 7dc7c1de122ebdc4a93324fc9b8f316b
+  - enabled: 1
+    path: Assets/Scenes/Ytt--Game.unity
+    guid: a3ce31817e5c5264291453b349cfa988
+  - enabled: 1
+    path: Assets/Scenes/Ytt--Map.unity
+    guid: b1f6e2dbabc4b9e46a302daf515caec6
   m_configObjects: {}
