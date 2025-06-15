@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 822200206992256379}
   - component: {fileID: 1282112737985838560}
   - component: {fileID: 5105343912015938536}
+  - component: {fileID: 1354078038490918080}
   m_Layer: 0
   m_Name: Marble
   m_TagString: Untagged
@@ -83,8 +84,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterText: {fileID: 5793992930740766128}
-  indexInChain: 0
-  positionOnPath: 0
+  distanceOnPath: 0
+--- !u!50 &1354078038490918080
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2039214921204788698}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 1
+  m_Constraints: 0
 --- !u!1 &2654467858898669205
 GameObject:
   m_ObjectHideFlags: 0
@@ -394,7 +421,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: b66333c9617fb5e4b874eb89bc1a1b7f, type: 3}
+  m_Sprite: {fileID: 925599378, guid: ba4fa36a3b488774d88f4944a3e33278, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

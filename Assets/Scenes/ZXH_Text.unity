@@ -804,6 +804,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1799023835}
   - component: {fileID: 1799023834}
+  - component: {fileID: 1799023836}
   m_Layer: 0
   m_Name: MarbleManager
   m_TagString: Untagged
@@ -818,7 +819,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1799023833}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9a44a172855f589488f54f71fbb9b8fb, type: 3}
   m_Name: 
@@ -826,8 +827,9 @@ MonoBehaviour:
   idiomFile: {fileID: 4900000, guid: 2b333a57a879411449f3ded3635ecda3, type: 3}
   marblePrefab: {fileID: 2039214921204788698, guid: c9b305b30e551c842889a01ac02d015d, type: 3}
   pathSpline: {fileID: 1260448617}
-  marbleSpeed: 1
-  marbleSpacing: 0.7
+  marbleSpeed: 0.6
+  marbleTime: 0.8
+  marbleSpacing: 0
 --- !u!4 &1799023835
 Transform:
   m_ObjectHideFlags: 0
@@ -843,6 +845,26 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1799023836
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1799023833}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17f3b45090862a8449666c5109bd07f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  idiomFile: {fileID: 4900000, guid: 2b333a57a879411449f3ded3635ecda3, type: 3}
+  marblePrefab: {fileID: 2039214921204788698, guid: c9b305b30e551c842889a01ac02d015d, type: 3}
+  pathSpline: {fileID: 1260448617}
+  idiomsPerLevel: 10
+  marbleSpeed: 1
+  initialMarbleCount: 20
+  spawnAnimationSpeed: 1
+  marbleChain: []
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

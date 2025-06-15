@@ -16,6 +16,7 @@ public class MarbleManager : MonoBehaviour
 
     [Header("游戏参数")]
     public float marbleSpeed = 1f;
+    public float marbleTime = 0.1f;
     public float marbleSpacing = 0.5f; // 珠子之间的距离
 
     [Header("数据存储")]
@@ -44,8 +45,9 @@ public class MarbleManager : MonoBehaviour
     void Start()
     {
         // 游戏开始时，生成初始的一串珠子
-        StartCoroutine(SpawnInitialMarbles());
+        //StartCoroutine(SpawnInitialMarbles());
 
+        StartCoroutine(SpawnMarbles(20, marbleTime)); // 生成20个珠子，每0.1秒一个
 
     }
 
@@ -112,9 +114,9 @@ public class MarbleManager : MonoBehaviour
             marbleChain.Insert(0, newMarble);
 
             // 重新计算所有珠子的位置
-            UpdateAllMarblePositions();
+            //UpdateAllMarblePositions();
 
-            yield return new WaitForSeconds(1f); // 逐个生成的效果
+            yield return new WaitForSeconds(marbleTime); // 逐个生成的效果
         }
     }
 
@@ -125,16 +127,16 @@ public class MarbleManager : MonoBehaviour
         for (int i = 0; i < marbleChain.Count; i++)
         {
             Marble marble = marbleChain[i];
-            marble.indexInChain = i;
+            //marble.indexInChain = i;
 
             // distance / totalLength = a value between 0 and 1
-            marble.positionOnPath = pathSpline.Spline.ConvertIndexUnit(currentDistance, PathIndexUnit.Distance, PathIndexUnit.Normalized);
+           // marble.positionOnPath = pathSpline.Spline.ConvertIndexUnit(currentDistance, PathIndexUnit.Distance, PathIndexUnit.Normalized);
 
             // 设置GameObject的位置和朝向
-            Vector3 position = pathSpline.EvaluatePosition(marble.positionOnPath);
-            Vector3 forward = (Vector3)pathSpline.EvaluateTangent(marble.positionOnPath);
-            marble.transform.position = position;
-            marble.transform.up = Vector3.Cross(forward, Vector3.forward); // 让珠子朝向正确
+            //Vector3 position = pathSpline.EvaluatePosition(marble.positionOnPath);
+           // Vector3 forward = (Vector3)pathSpline.EvaluateTangent(marble.positionOnPath);
+            //marble.transform.position = position;
+            //marble.transform.up = Vector3.Cross(forward, Vector3.forward); // 让珠子朝向正确
 
             currentDistance += marbleSpacing;
         }
@@ -148,25 +150,25 @@ public class MarbleManager : MonoBehaviour
         float distanceToMove = marbleSpeed * Time.deltaTime;
 
         // 从链条尾部开始更新，避免位置计算错误
-        for (int i = marbleChain.Count - 1; i >= 0; i--)
-        {
-            Marble marble = marbleChain[i];
+        //for (int i = marbleChain.Count - 1; i >= 0; i--)
+        //{
+        //    Marble marble = marbleChain[i];
 
-            // 将当前位置（0-1的比例）转换成实际距离
-            float currentDistance = pathSpline.Spline.ConvertIndexUnit(marble.positionOnPath, PathIndexUnit.Normalized, PathIndexUnit.Distance);
+        //    // 将当前位置（0-1的比例）转换成实际距离
+        //    float currentDistance = pathSpline.Spline.ConvertIndexUnit(marble.positionOnPath, PathIndexUnit.Normalized, PathIndexUnit.Distance);
 
-            // 新的距离
-            float newDistance = currentDistance + distanceToMove;
+        //    // 新的距离
+        //    float newDistance = currentDistance + distanceToMove;
 
-            // 更新路径位置
-            marble.positionOnPath = pathSpline.Spline.ConvertIndexUnit(newDistance, PathIndexUnit.Distance, PathIndexUnit.Normalized);
+        //    // 更新路径位置
+        //    marble.positionOnPath = pathSpline.Spline.ConvertIndexUnit(newDistance, PathIndexUnit.Distance, PathIndexUnit.Normalized);
 
-            // 更新GameObject的Transform
-            Vector3 position = pathSpline.EvaluatePosition(marble.positionOnPath);
-            Vector3 forward = (Vector3)pathSpline.EvaluateTangent(marble.positionOnPath);
-            marble.transform.position = position;
-            marble.transform.up = Vector3.Cross(forward, Vector3.forward);
-        }
+        //    // 更新GameObject的Transform
+        //    Vector3 position = pathSpline.EvaluatePosition(marble.positionOnPath);
+        //    Vector3 forward = (Vector3)pathSpline.EvaluateTangent(marble.positionOnPath);
+        //    marble.transform.position = position;
+        //    marble.transform.up = Vector3.Cross(forward, Vector3.forward);
+        //}
     }
 
 
@@ -190,7 +192,7 @@ public class MarbleManager : MonoBehaviour
 
             // 设置初始位置
             float normalizedPos = pathSpline.Spline.ConvertIndexUnit(spawnDistance, PathIndexUnit.Distance, PathIndexUnit.Normalized);
-            newMarble.positionOnPath = normalizedPos;
+           // newMarble.positionOnPath = normalizedPos;
             Vector3 position = pathSpline.EvaluatePosition(normalizedPos);
             newMarble.transform.position = position;
 
@@ -215,7 +217,7 @@ public class MarbleManager : MonoBehaviour
             float t = Mathf.Clamp01(elapsed / duration);
             float curDistance = Mathf.Lerp(startDistance, endDistance, t);
             float norm = pathSpline.Spline.ConvertIndexUnit(curDistance, PathIndexUnit.Distance, PathIndexUnit.Normalized);
-            marble.positionOnPath = norm;
+            //marble.positionOnPath = norm;
             Vector3 pos = pathSpline.EvaluatePosition(norm);
             Vector3 forward = (Vector3)pathSpline.EvaluateTangent(norm);
             marble.transform.position = pos;
