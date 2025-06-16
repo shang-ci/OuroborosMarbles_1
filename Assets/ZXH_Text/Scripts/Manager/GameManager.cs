@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
     public TextAsset idiomFile;          // 拖入 chengyu.txt
     public GameObject marblePrefab;      // 拖入 Marble Prefab
     public SplineContainer pathSpline;   // 拖入场景中的轨道对象 (Path)
+    public GameObject spawnPointObj;        // 拖入场景中的出生点对象 (SpawnPoint)
 
     [Header("关卡与游戏参数")]
     public int idiomsPerLevel = 10;      // 本关使用多少个成语
@@ -37,10 +38,18 @@ public class GameManager : MonoBehaviour
 
         // [关键初始化] 在游戏开始时，创建并初始化数据管理器
         _idiomData = new IdiomDataManager(idiomFile, idiomsPerLevel);
+
+
     }
 
     void Start()
     {
+        //出生点
+        if (spawnPointObj != null && pathSpline != null)
+        {
+            spawnPointObj.transform.position = pathSpline.Spline.EvaluatePosition(0f);
+        }
+
         // [关键修改] 直接以轨道起点为基准生成
         // [关键修改] 使用协程来动态生成珠子，避免竞态条件并增加动画效果
         StartCoroutine(SpawnInitialChainCoroutine(initialMarbleCount));
@@ -137,9 +146,13 @@ public class GameManager : MonoBehaviour
             yield return null;
         }
 
-        tempChain.Reverse();
+        //tempChain.Reverse();
         marbleChain = tempChain;
         RecalculateAllDistances();
+
+        // 生成完毕后，进行一次全局检查，消除初始就存在的成语
+        yield return new WaitForEndOfFrame(); // 等待一帧，确保所有位置都已更新
+        CheckAndEliminateAllMatches();
     }
 
 
@@ -160,158 +173,68 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
-
-    //void Update()
-    //{
-    //    // [核心循环] 每帧调用高效的移动方法
-    //    MoveMarbleChainSmoothly();
-    //}
-
-    // Fix for CS1061: Replace the usage of `GetDistance` with a valid method or calculation.  
-    // Based on the provided Spline type signatures, `GetCurveLength` can be used to calculate distances.  
-
-    //private void MoveMarbleChainSmoothly()
-    //{
-    //    Debug.Log("MoveMarbleChainSmoothly called. Chain count: " + marbleChain.Count);
-
-    //    if (marbleChain.Count == 0) return;
-
-    //    // 1. 移动领导者 (链条的第一个珠子)  
-    //    Marble headMarble = marbleChain[0];
-    //    Vector3 oldPos = headMarble.transform.position;
-
-    //    //使用我们新的辅助方法来获取距离
-    //    float oldDistanceOnPath = GetDistanceOnSpline(headMarble.transform.position);  
-
-    //    float newDistanceOnPath = oldDistanceOnPath + marbleSpeed * Time.deltaTime;
-
-    //    // 更新领导者的位置和姿态 (使其垂直于轨道切线)  
-    //    float newPosNormalized = pathSpline.Spline.ConvertIndexUnit(newDistanceOnPath, PathIndexUnit.Distance, PathIndexUnit.Normalized);
-    //    headMarble.transform.position = pathSpline.EvaluatePosition(newPosNormalized);
-    //    Vector3 newPos = headMarble.transform.position;
-    //    Vector3 forward = (Vector3)pathSpline.EvaluateTangent(newPosNormalized);
-    //    headMarble.transform.up = Vector3.Cross(forward, Vector3.forward);
-
-    //    // 更新领导者的滚动效果  
-    //    headMarble.UpdateRotation(newPos - oldPos);
-
-    //    // 2. 移动所有跟随者，让它们紧跟前者  
-    //    for (int i = 1; i < marbleChain.Count; i++)
-    //    {
-    //        Marble currentMarble = marbleChain[i];
-    //        Marble marbleInFront = marbleChain[i - 1];
-
-    //        // 目标：当前珠子的中心点与前一个珠子的中心点保持一个“直径和的一半”的距离  
-    //        float targetSpacing = (marbleInFront.Diameter + currentMarble.Diameter) * 0.5f;
-    //        float frontMarbleDistance = GetDistanceOnSpline(marbleInFront.transform.position);   
-    //        float targetDistance = frontMarbleDistance - targetSpacing;
-
-    //        //float currentDistance = GetDistanceOnSpline(headMarble.transform.position); 
-    //        Vector3 oldFollowerPos = currentMarble.transform.position;
-
-    //        // 直接设置到目标位置，也可以用 Lerp 做一个微小的平滑缓冲效果  
-    //        float posNormalized = pathSpline.Spline.ConvertIndexUnit(targetDistance, PathIndexUnit.Distance, PathIndexUnit.Normalized);
-    //        currentMarble.transform.position = pathSpline.EvaluatePosition(posNormalized);
-    //        Vector3 newFollowerPos = currentMarble.transform.position;
-    //        forward = (Vector3)pathSpline.EvaluateTangent(posNormalized);
-    //        currentMarble.transform.up = Vector3.Cross(forward, Vector3.forward);
-
-    //        // 更新跟随者的滚动效果  
-    //        currentMarble.UpdateRotation(newFollowerPos - oldFollowerPos);
-    //    }
-    //}
-
-    private void MoveMarbleChainSmoothly()
-    {
-        if (marbleChain.Count == 0) return;
-
-        // --- 1. 计算头车(Head Marble)的速度 ---
-        Marble headMarble = marbleChain[0];
-        Rigidbody2D headRb = headMarble.GetComponent<Rigidbody2D>();
-
-        // 获取头车在轨道上的归一化位置 't'
-        SplineUtility.GetNearestPoint(pathSpline.Spline, headMarble.transform.position, out _, out float t);
-
-        // 获取该点的切线方向 (即前进方向)
-        // 获取归一化的 float3 切线向量
-        float3 tangentFloat3 = math.normalize(pathSpline.Spline.EvaluateTangent(t));
-        // 手动创建 Vector2，只使用 x 和 y 分量
-        Vector2 tangent = new Vector2(tangentFloat3.x, tangentFloat3.y);
-
-        // 头车的速度就是基础速度乘以方向
-        Vector2 headVelocity = tangent * marbleSpeed;
-        headRb.velocity = headVelocity;
-
-        // 根据速度更新旋转
-        //headMarble.UpdateRotation(headVelocity);
-
-        // --- 2. 计算所有跟随者(Follower Marbles)的速度 ---
-        for (int i = 1; i < marbleChain.Count; i++)
-        {
-            Marble currentMarble = marbleChain[i];
-            Marble marbleInFront = marbleChain[i - 1];
-            Rigidbody2D currentRb = currentMarble.GetComponent<Rigidbody2D>();
-
-            // 目标：让珠子间的距离保持为一个理想值 (半径之和)
-            float targetSpacing = (marbleInFront.Diameter + currentMarble.Diameter) * 0.5f;
-            float currentSpacing = Vector2.Distance(currentMarble.transform.position, marbleInFront.transform.position);
-
-            // 计算距离误差
-            float distanceError = currentSpacing - targetSpacing;
-
-            // [核心算法：弹簧模型]
-            // 根据距离误差来调整速度，形成一个“弹簧”效果
-            // 如果距离太远 (error > 0)，就加速追赶
-            // 如果距离太近 (error < 0)，就减速甚至后退来拉开距离
-            // correctionFactor 决定了弹簧的“硬度”
-            float correctionFactor = 5f;
-            float speedAdjustment = distanceError * correctionFactor;
-
-            // 跟随者的速度 = 基础速度 + 修正速度
-            float followerSpeed = marbleSpeed + speedAdjustment;
-
-            // 确保速度不会过快或变为负数（除非需要后退）
-            followerSpeed = Mathf.Clamp(followerSpeed, 0, marbleSpeed * 2);
-
-            // 获取跟随者当前位置的切线方向
-            SplineUtility.GetNearestPoint(pathSpline.Spline, currentMarble.transform.position, out _, out float follower_t);
-            float3 followerTangentFloat3 = math.normalize(pathSpline.Spline.EvaluateTangent(follower_t));
-            Vector2 followerTangent = new Vector2(followerTangentFloat3.x, followerTangentFloat3.y);
-
-            // 设置跟随者的最终速度
-            Vector2 followerVelocity = followerTangent * followerSpeed;
-            currentRb.velocity = followerVelocity;
-
-            // 根据速度更新旋转
-            //currentMarble.UpdateRotation(followerVelocity);
-        }
-    }
-
     // ... (其他方法，如 InsertMarble, CheckForMatches 等在下方) ...
 
     /// <summary>
-    /// [平滑插入逻辑] 当发射的珠子碰撞后，在此处执行插入操作。
+    /// 插入发射的珠子到链条中，碰撞时根据X坐标判断插入前后，并自动检测消除成语。
     /// </summary>
-    public void InsertMarble(int collisionIndex, Marble shotMarble)
+    /// <param name="collisionMarble">被碰撞的链条珠子</param>
+    /// <param name="shotMarble">发射的珠子（已实例化）</param>
+    public void InsertMarble(Marble collisionMarble, Marble shotMarble)
     {
-        // 实例化新珠子，并设置它的文字
-        GameObject newMarbleObj = Instantiate(marblePrefab, shotMarble.transform.position, Quaternion.identity);
-        Marble newMarble = newMarbleObj.GetComponent<Marble>();
-        newMarble.SetCharacter(shotMarble.GetCharacter());
+        // 获取碰撞珠子在链表中的索引
+        int collisionIndex = marbleChain.IndexOf(collisionMarble);
+        if (collisionIndex == -1) return; // 防御性检查
 
-        // 将新珠子插入到 List 中的正确位置
-        int insertionIndex = collisionIndex + 1;
-        marbleChain.Insert(insertionIndex, newMarble);
+        // 判断插入到前面还是后面
+        int insertIndex = collisionIndex;
+        if (shotMarble.transform.position.x > collisionMarble.transform.position.x)
+        {
+            // 发射珠在右侧，插入到后面
+            insertIndex = collisionIndex + 1;
+        }
+        // 否则插入到前面（insertIndex = collisionIndex）
 
-        // **不再调用全局更新！** 移动循环会在下一帧自动将后面的珠子平滑推开。
+        // 将发射珠子插入到链表
+        marbleChain.Insert(insertIndex, shotMarble);
 
-        // 插入后立即检查是否能组成成语
-        CheckForMatches(insertionIndex);
+        // 插入后立即检测并消除所有成语（支持连锁）
+        CheckAndEliminateAllMatches();
     }
 
     /// <summary>
-    /// [消除逻辑] 检查指定位置附近是否能组成成语。
+    /// 检查并消除所有可组成成语的珠子，支持连锁消除
+    /// </summary>
+    public void CheckAndEliminateAllMatches()
+    {
+        bool foundMatch;
+        do
+        {
+            foundMatch = false;
+            for (int i = 0; i <= marbleChain.Count - 4; i++)
+            {
+                string idiom = "";
+                for (int j = 0; j < 4; j++)
+                {
+                    idiom += marbleChain[i + j].GetCharacter();
+                }
+                if (_idiomData.IsValidSessionIdiom(idiom))
+                {
+                    // 消除成语
+                    for (int k = 0; k < 4; k++)
+                    {
+                        Destroy(marbleChain[i].gameObject); // 每次都移除i，因为后面的会前移
+                        marbleChain.RemoveAt(i);
+                    }
+                    foundMatch = true;
+                    break; // 重新从头检测，支持连锁
+                }
+            }
+        } while (foundMatch);
+    }
+
+    /// <summary>
+    /// [消除逻辑] 检查指定位置附近是否能组成成语
     /// </summary>
     public void CheckForMatches(int insertionIndex)
     {
@@ -345,67 +268,6 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// [彻底重构 V2.0] 以轨道起点为基准，向后生成指定数量的珠子。
-    /// </summary>
-    /// <param name="count">要生成的珠子数量</param>
-    //private IEnumerator SpawnInitialChainCoroutine(int count)
-    //{
-    //    Debug.Log("Spawning coroutine started...");
-
-    //    // 清空旧链条
-    //    foreach (var marble in marbleChain) Destroy(marble.gameObject);
-    //    marbleChain.Clear();
-
-    //    for (int i = 0; i < count; i++)
-    //    {
-    //        // 1. 从数据管理器获取下一个字
-    //        char nextChar = _idiomData.GetNextCharacterForInitialSpawn();
-    //        if (nextChar == '?') break;
-
-    //        // 2. 实例化新珠子
-    //        GameObject newMarbleObj = Instantiate(marblePrefab);
-    //        Marble newMarble = newMarbleObj.GetComponent<Marble>();
-    //        newMarble.SetCharacter(nextChar);
-
-    //        // 3. 将新珠子放置在轨道起点 (distance 0)
-    //        // 这是它的唯一职责！
-    //        float posNormalized = pathSpline.Spline.ConvertIndexUnit(0, PathIndexUnit.Distance, PathIndexUnit.Normalized);
-    //        newMarble.transform.position = pathSpline.EvaluatePosition(posNormalized);
-
-    //        // 4. 将新珠子添加到链条的“头部”（索引0）
-    //        marbleChain.Insert(0, newMarble);
-
-    //        // 5. 等待一小段时间，以控制生成的速度
-    //        yield return new WaitForSeconds(spawnAnimationSpeed);
-    //    }
-    //}
-
-    //private IEnumerator SpawnInitialChainCoroutine(int count)
-    //{
-    //    foreach (var marble in marbleChain) Destroy(marble.gameObject);
-    //    marbleChain.Clear();
-
-    //    for (int i = 0; i < count; i++)
-    //    {
-    //        char nextChar = _idiomData.GetNextCharacterForInitialSpawn();
-    //        if (nextChar == '?') break;
-
-    //        // 实例化珠子，并放置在轨道起点
-    //        GameObject newMarbleObj = Instantiate(marblePrefab, pathSpline.Spline.EvaluatePosition(0), Quaternion.identity);
-    //        Marble newMarble = newMarbleObj.GetComponent<Marble>();
-    //        newMarble.SetCharacter(nextChar);
-
-    //        // 将新珠子添加到链条的头部（索引0）
-    //        // 这一步是关键，让它成为新的“头车”
-    //        marbleChain.Insert(0, newMarble);
-
-    //        // 等待一小段时间
-    //        yield return new WaitForSeconds(spawnAnimationSpeed);
-    //    }
-    //}
-
-
-    /// <summary>
     /// [公共API] 提供给 Launcher 获取下一个要发射的字。
     /// </summary>
     public char GetNextCharForLauncher()
@@ -413,16 +275,19 @@ public class GameManager : MonoBehaviour
         return _idiomData.GetNextCharacterToShoot();
     }
 
-    // 在 GameManager.cs 中添加这个公共方法
+    /// <summary>
+    /// 获取指定珠子在链中的索引位置
+    /// </summary>
+    /// <param name="marble">珠子</param>
+    /// <returns></returns>
     public int GetMarbleIndex(Marble marble)
     {
         return marbleChain.IndexOf(marble);
     }
 
-    // 在 GameManager.cs 脚本内部，任何其他方法之外添加
 
     /// <summary>
-    /// [核心辅助方法] 计算一个世界坐标点在轨道上的最近点的路程距离。
+    /// 计算一个世界坐标点在轨道上的最近点的路程距离
     /// </summary>
     /// <param name="worldPosition">要查询的世界坐标</param>
     /// <returns>从轨道起点到该最近点的距离</returns>
@@ -435,6 +300,4 @@ public class GameManager : MonoBehaviour
         // 步骤2: 将归一化的位置 't' 转换成实际的路程距离。
         return pathSpline.Spline.ConvertIndexUnit(t, PathIndexUnit.Normalized, PathIndexUnit.Distance);
     }
-
-
 }
