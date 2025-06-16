@@ -186,9 +186,13 @@ public class GameManager : MonoBehaviour
         int collisionIndex = marbleChain.IndexOf(collisionMarble);
         if (collisionIndex == -1) return; // 防御性检查
 
+        GameObject newMarbleObj = Instantiate(marblePrefab);
+        Marble newMarble = newMarbleObj.GetComponent<Marble>();
+        newMarble.SetCharacter(shotMarble.GetCharacter());
+
         // 判断插入到前面还是后面
         int insertIndex = collisionIndex;
-        if (shotMarble.transform.position.x > collisionMarble.transform.position.x)
+        if (newMarble.transform.position.x > collisionMarble.transform.position.x)
         {
             // 发射珠在右侧，插入到后面
             insertIndex = collisionIndex + 1;
@@ -196,7 +200,88 @@ public class GameManager : MonoBehaviour
         // 否则插入到前面（insertIndex = collisionIndex）
 
         // 将发射珠子插入到链表
-        marbleChain.Insert(insertIndex, shotMarble);
+        marbleChain.Insert(insertIndex, newMarble);
+
+        // 插入后立即检测并消除所有成语（支持连锁）
+        CheckAndEliminateAllMatches();
+    }
+
+
+    /// <summary>
+    /// 插入发射的珠子到链条中，判断插入到前还是后，并设置distanceOnPath
+    /// </summary>
+    /// <param name="collisionMarble">被碰撞的链条珠子</param>
+    /// <param name="shotMarble">发射的珠子（已实例化）</param>
+    public void InsertMarble2(Marble collisionMarble, Marble shotMarble)
+    {
+        int collisionIndex = marbleChain.IndexOf(collisionMarble);
+        if (collisionIndex == -1) return;
+
+        GameObject newMarbleObj = Instantiate(marblePrefab);
+        Marble newMarble = newMarbleObj.GetComponent<Marble>();
+        newMarble.SetCharacter(shotMarble.GetCharacter());
+
+        int insertIndex = collisionIndex; // 默认插在前面
+        float insertDistance = collisionMarble.distanceOnPath;
+
+        // 判断前一个和后一个的距离
+        float distToPrev = float.MaxValue;
+        float distToNext = float.MaxValue;
+
+        if (collisionIndex > 0)
+        {
+            var prevMarble = marbleChain[collisionIndex - 1];
+            distToPrev = Vector2.Distance(shotMarble.transform.position, prevMarble.transform.position);
+        }
+        if (collisionIndex < marbleChain.Count - 1)
+        {
+            var nextMarble = marbleChain[collisionIndex + 1];
+            distToNext = Vector2.Distance(shotMarble.transform.position, nextMarble.transform.position);
+        }
+
+        // 判断插入到前还是后
+        if (distToPrev < distToNext)
+        {
+            // 插到前面
+            insertIndex = collisionIndex;
+            if (collisionIndex > 0)
+            {
+                // 线性插值distanceOnPath
+                float prevDist = marbleChain[collisionIndex - 1].distanceOnPath;
+                float currDist = collisionMarble.distanceOnPath;
+                insertDistance = (prevDist + currDist) * 0.5f;
+            }
+            else
+            {
+                // 是第一个球，直接用当前球的distanceOnPath
+                insertDistance = collisionMarble.distanceOnPath + shotMarble.Diameter;
+            }
+        }
+        else
+        {
+            // 插到后面
+            insertIndex = collisionIndex + 1;
+            if (collisionIndex < marbleChain.Count - 1)
+            {
+                float nextDist = marbleChain[collisionIndex + 1].distanceOnPath;
+                float currDist = collisionMarble.distanceOnPath;
+                insertDistance = (nextDist + currDist) * 0.5f;
+            }
+            else
+            {
+                // 是最后一个球，直接用当前球的distanceOnPath
+                insertDistance = collisionMarble.distanceOnPath - shotMarble.Diameter;
+            }
+        }
+
+        // 设置发射珠子的distanceOnPath
+        newMarble.distanceOnPath = insertDistance;
+
+        // 插入到链表
+        marbleChain.Insert(insertIndex, newMarble);
+
+        // 立即消除成语
+        CheckAndEliminateAllMatches();
 
         // 插入后立即检测并消除所有成语（支持连锁）
         CheckAndEliminateAllMatches();

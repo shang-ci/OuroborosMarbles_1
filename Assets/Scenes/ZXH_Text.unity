@@ -1470,7 +1470,7 @@ MonoBehaviour:
   idiomFile: {fileID: 4900000, guid: 2b333a57a879411449f3ded3635ecda3, type: 3}
   marblePrefab: {fileID: 2039214921204788698, guid: c9b305b30e551c842889a01ac02d015d, type: 3}
   pathSpline: {fileID: 1260448617}
-  spawnPointObj: {fileID: 156463220}
+  spawnPointObj: {fileID: 0}
   idiomsPerLevel: 10
   marbleSpeed: 1
   initialMarbleCount: 20

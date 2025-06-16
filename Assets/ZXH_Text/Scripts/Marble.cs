@@ -15,8 +15,7 @@ public class Marble : MonoBehaviour
     // [私有变量]
     private char _character;
     private SpriteRenderer _spriteRenderer;
-    private float _currentRotationZ = 0f; // 累计旋转角度，以实现连续滚动
-    private float _currentZRotation = 0f;
+    private float _currentZRotation = 0f;    // 累计旋转角度，以实现连续滚动
 
     // [公共属性] 向外部提供珠子的直径，用于精确的碰撞和间距计算
     public float Diameter => _spriteRenderer != null ? _spriteRenderer.bounds.size.x : 1f;
