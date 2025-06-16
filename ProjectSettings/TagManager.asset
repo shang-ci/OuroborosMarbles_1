@@ -41,3 +41,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Background
+    uniqueID: 2994253577
+    locked: 0
+  - name: Marble
+    uniqueID: 2225135579
+    locked: 0
