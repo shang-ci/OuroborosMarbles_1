@@ -24,7 +24,8 @@ public class ShotMarble : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("Åö×²");
+        AudioManager.Instance.PlaySFX("Marble"); // ²¥·ÅÅö×²ÒôÐ§   
+
         Marble collidedMarble = collision.gameObject.GetComponent<Marble>();
         if (collidedMarble != null && collision.gameObject.GetComponent<ShotMarble>() == null)
         {

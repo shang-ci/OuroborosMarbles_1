@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9006b2fe1b090414d92da60af1d70fbc, type: 3}
+  m_Name: ZXH_BattleAudioLibrary
+  m_EditorClassIdentifier: 
+  sounds:
+  - id: BattleSouce
+    clip: {fileID: 8300000, guid: 132d059b96e0ca14f83a46270942e9b5, type: 3}
+    volume: 1
+    loop: 1
+  - id: Marble
+    clip: {fileID: 8300000, guid: 68f7fda10f05d784a9fa43652012a467, type: 3}
+    volume: 1
+    loop: 0

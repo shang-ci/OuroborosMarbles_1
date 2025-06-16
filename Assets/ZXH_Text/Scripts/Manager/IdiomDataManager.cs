@@ -22,6 +22,9 @@ public class IdiomDataManager
     // [新数据结构] 专门用于生成初始珠子链的队列
     private Queue<char> _initialSpawnQueue;
 
+    private List<char> _initialSpawnBackup;   // 初始生成队列的备份
+    private List<char> _shootBackup;          // 发射队列的备份
+
     /// <summary>
     /// 构造函数，在游戏开始时初始化整个数据管道。
     /// </summary>
@@ -81,6 +84,11 @@ public class IdiomDataManager
             _sessionIdioms.Add(allIdiomsList[randomIndex]);
             allIdiomsList.RemoveAt(randomIndex);
         }
+
+        foreach(var chengyu in _sessionIdioms)
+        {
+            Debug.Log($"本局成语：{chengyu}/n");
+        }
     }
 
     private void PopulateCharacterPool()
@@ -102,21 +110,26 @@ public class IdiomDataManager
         // 这个比例可以根据你的设计来调整
         int splitIndex = Mathf.CeilToInt(shuffledList.Count / 2f);
 
+        // 备份
+        _initialSpawnBackup = shuffledList.Take(splitIndex).ToList();
+        // 备份：全部字都备份到_shootBackup
+        _shootBackup = new List<char>(shuffledList);
+
         // 填充初始生成队列
         for (int i = 0; i < splitIndex; i++)
         {
             _initialSpawnQueue.Enqueue(shuffledList[i]);
         }
 
-        // 填充发射队列
-        for (int i = splitIndex; i < shuffledList.Count; i++)
-        {
-            _shuffledCharacterQueue.Enqueue(shuffledList[i]);
-        }
+        // 填充发射队列：全部字
+        _shuffledCharacterQueue = new Queue<char>(_shootBackup);
 
-        Debug.Log($"数据初始化：初始生成队列 {_initialSpawnQueue.Count} 个字，发射队列 {_shuffledCharacterQueue.Count} 个字。");
+        Debug.Log($"数据初始化：初始生成队列 {_initialSpawnQueue.Count} 个字，发射队列 {_shuffledCharacterQueue.Count} 个字");
     }
 
+    /// <summary>
+    /// 打乱字池并填充发射队列
+    /// </summary>
     private void ShuffleAndFillQueue()
     {
         // 使用 Linq 的 OrderBy 和 Guid 实现一个高效的随机排序
@@ -124,10 +137,9 @@ public class IdiomDataManager
         _shuffledCharacterQueue = new Queue<char>(shuffledList);
     }
 
-    // --- 公共接口(API)，供 GameManager 调用 ---
 
     /// <summary>
-    /// 检查一个字符串是否是本局游戏中的有效成语。
+    /// 检查一个字符串是否是本局游戏中的有效成语
     /// </summary>
     public bool IsValidSessionIdiom(string potentialIdiom)
     {
@@ -154,20 +166,23 @@ public class IdiomDataManager
             return _initialSpawnQueue.Dequeue();
         }
 
-        // 如果初始队列用完了，可以从发射队列里借一个，或者返回一个默认字符
-        Debug.LogWarning("初始生成队列已空！");
-        return '?';
+        // 用备份重新打乱补充
+        Debug.LogWarning("初始生成队列已空，重新打乱补充！");
+        var reshuffled = _initialSpawnBackup.OrderBy(x => System.Guid.NewGuid()).ToList();
+        _initialSpawnQueue = new Queue<char>(reshuffled);
+        return _initialSpawnQueue.Dequeue();
     }
 
     /// <summary>
-    /// 从发射队列中取出一个字。如果队列为空则自动重新填充。
+    /// 从发射队列中取出一个字，如果队列为空则自动重新填充
     /// </summary>
     public char GetNextCharacterToShoot()
     {
         if (_shuffledCharacterQueue.Count == 0)
         {
-            Debug.LogWarning("发射队列已空，重新填充并打乱！");
-            ShuffleAndFillQueue();
+            Debug.LogWarning("发射队列已空，重新打乱补充！");
+            var reshuffled = _shootBackup.OrderBy(x => System.Guid.NewGuid()).ToList();
+            _shuffledCharacterQueue = new Queue<char>(reshuffled);
         }
 
         // Queue.Dequeue() 会自动取出并移除第一个元素

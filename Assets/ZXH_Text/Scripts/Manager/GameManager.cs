@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
     public float marbleSpeed = 1f;       // 珠子链的基础移动速度
     public int initialMarbleCount = 20; // 这一关总共生成的珠子数量
     public float spawnAnimationSpeed = 0.1f; // 珠子生成的动画速度，值越小越快
+    [SerializeField]private int currentchengyu = 0; // 消除的成语个数
 
     // [数据管理器] 引用我们设计的 IdiomDataManager
     private IdiomDataManager _idiomData;
@@ -39,7 +40,7 @@ public class GameManager : MonoBehaviour
         // [关键初始化] 在游戏开始时，创建并初始化数据管理器
         _idiomData = new IdiomDataManager(idiomFile, idiomsPerLevel);
 
-
+        AudioManager.Instance.PlayBGM("BattleSouce"); // 播放游戏开始音效
     }
 
     void Start()
@@ -54,6 +55,21 @@ public class GameManager : MonoBehaviour
         // [关键修改] 使用协程来动态生成珠子，避免竞态条件并增加动画效果
         StartCoroutine(SpawnInitialChainCoroutine(initialMarbleCount));
     }
+
+    private void Update()
+    {
+        if (currentchengyu == idiomsPerLevel)
+        {
+            GameWin();
+        }
+
+        float totalLength = pathSpline.Spline.GetLength();
+        if (marbleChain.Count > 0 && marbleChain[0].distanceOnPath >= totalLength)
+        {
+            GameOver();
+        }
+    }
+
 
     /// <summary>
     /// [核心移动逻辑] 在固定的时间间隔执行，以实现平滑、物理精确的移动。
@@ -311,6 +327,7 @@ public class GameManager : MonoBehaviour
                         Destroy(marbleChain[i].gameObject); // 每次都移除i，因为后面的会前移
                         marbleChain.RemoveAt(i);
                     }
+                    currentchengyu++; // 成语计数增加
                     foundMatch = true;
                     break; // 重新从头检测，支持连锁
                 }
@@ -385,4 +402,39 @@ public class GameManager : MonoBehaviour
         // 步骤2: 将归一化的位置 't' 转换成实际的路程距离。
         return pathSpline.Spline.ConvertIndexUnit(t, PathIndexUnit.Normalized, PathIndexUnit.Distance);
     }
+
+
+    #region 胜负
+    /// <summary>
+    /// 游戏胜利：所有珠子被消除或满足其它胜利条件时调用
+    /// </summary>
+    public void GameWin()
+    {
+        Debug.Log("游戏胜利！");
+        // 停止所有珠子移动
+        foreach (var marble in marbleChain)
+        {
+            var rb = marble.GetComponent<Rigidbody2D>();
+            if (rb != null) rb.velocity = Vector2.zero;
+        }
+
+        // 可扩展：播放胜利音效、弹窗、切换场景等
+    }
+
+    /// <summary>
+    /// 游戏失败：如珠子链头到达终点时调用
+    /// </summary>
+    public void GameOver()
+    {
+        Debug.Log("游戏失败！");
+        // 停止所有珠子移动
+        foreach (var marble in marbleChain)
+        {
+            var rb = marble.GetComponent<Rigidbody2D>();
+            if (rb != null) rb.velocity = Vector2.zero;
+        }
+        // 可扩展：播放失败音效、弹窗、切换场景等
+
+    }
+    #endregion
 }

@@ -44,6 +44,8 @@ public class Launcher : MonoBehaviour
     /// <param name="direction">发射速度</param>
     void Shoot(Vector2 direction)
     {
+        AudioManager.Instance.PlaySFX("Marble"); // 播放发射音效
+
         GameObject shotMarbleObj = Instantiate(marblePrefab, transform.position, Quaternion.identity);
         shotMarbleObj.GetComponent<Marble>().SetCharacter(nextCharToShoot);
         shotMarbleObj.AddComponent<ShotMarble>().Launch(direction);
