@@ -17,4 +17,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Ytt--Map.unity
     guid: b1f6e2dbabc4b9e46a302daf515caec6
+  - enabled: 1
+    path: Assets/Scenes/Ytt--End.unity
+    guid: 879b8e466658cef488a46578b8f300c5
+  - enabled: 1
+    path: Assets/Scenes/ZXH_Text.unity
+    guid: b84254bbbc86b22408784902f11fcd6a
   m_configObjects: {}
