@@ -29,7 +29,7 @@ public class ShotMarble : MonoBehaviour
         if (collidedMarble != null && collision.gameObject.GetComponent<ShotMarble>() == null)
         {
             int index = GameManager.Instance.GetMarbleIndex(collidedMarble);
-            if (index != -1) GameManager.Instance.InsertMarble(collidedMarble, GetComponent<Marble>());
+            if (index != -1) GameManager.Instance.InsertMarble2(collidedMarble, GetComponent<Marble>());
             Destroy(gameObject);
         }
     }
