@@ -15,7 +15,7 @@ MonoBehaviour:
   sounds:
   - id: BattleSouce
     clip: {fileID: 8300000, guid: 132d059b96e0ca14f83a46270942e9b5, type: 3}
-    volume: 1
+    volume: 0.4
     loop: 1
   - id: Marble
     clip: {fileID: 8300000, guid: 68f7fda10f05d784a9fa43652012a467, type: 3}

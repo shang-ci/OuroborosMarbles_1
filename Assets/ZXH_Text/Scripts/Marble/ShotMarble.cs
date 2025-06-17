@@ -1,12 +1,12 @@
 using UnityEngine;
 
 /// <summary>
-/// ¸³Óè±»·¢Éä³öÈ¥µÄÖé×ÓÖ±Ïß·ÉĞĞµÄÄÜÁ¦£¬²¢¼ì²âËüÓëÖé×ÓÁ´µÄÅö×²¡£
+/// ï¿½ï¿½ï¿½è±»ï¿½ï¿½ï¿½ï¿½ï¿½È¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö±ï¿½ß·ï¿½ï¿½Ğµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×²ï¿½ï¿½
 /// </summary>
 [RequireComponent(typeof(Rigidbody2D), typeof(CircleCollider2D))]
 public class ShotMarble : MonoBehaviour
 {
-    [SerializeField]private float speed = 5f;
+    [SerializeField]private float speed = 7f;
 
     void Awake() 
     { 
@@ -14,7 +14,7 @@ public class ShotMarble : MonoBehaviour
     }
 
     /// <summary>
-    /// ·¢ÉäÖé×Ó£¬ÉèÖÃÆäËÙ¶ÈºÍ·½Ïò
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ù¶ÈºÍ·ï¿½ï¿½ï¿½
     /// </summary>
     /// <param name="direction"></param>
     public void Launch(Vector2 direction) 
@@ -24,7 +24,7 @@ public class ShotMarble : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        AudioManager.Instance.PlaySFX("Marble"); // ²¥·ÅÅö×²ÒôĞ§   
+        AudioManager.Instance.PlaySFX("Marble"); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×²ï¿½ï¿½Ğ§   
 
         Marble collidedMarble = collision.gameObject.GetComponent<Marble>();
         if (collidedMarble != null && collision.gameObject.GetComponent<ShotMarble>() == null)

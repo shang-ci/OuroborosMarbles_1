@@ -1,58 +1,59 @@
 // GameManager.cs
-// Ö°Ôð£ºÓÎÏ·Á÷³ÌµÄ×Ü¿ØÖÆÖÐÐÄ¡£¹ÜÀíÖé×ÓÁ´µÄÉú³É¡¢ÒÆ¶¯¡¢²åÈëºÍÏû³ý¡£
+// Ö°ï¿½ï¿½ï¿½ï¿½Ï·ï¿½ï¿½ï¿½Ìµï¿½ï¿½Ü¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É¡ï¿½ï¿½Æ¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.Splines;
 using System.Collections;
-using Unity.Mathematics; // È·±£Ê¹ÓÃÕýÈ·µÄ Spline ÃüÃû¿Õ¼ä
+using Unity.Mathematics; // È·ï¿½ï¿½Ê¹ï¿½ï¿½ï¿½ï¿½È·ï¿½ï¿½ Spline ï¿½ï¿½ï¿½ï¿½ï¿½Õ¼ï¿½
 
 public class GameManager : MonoBehaviour
 {
-    // [µ¥ÀýÄ£Ê½] ·½±ãÆäËû½Å±¾£¨ÈçLauncher£©·ÃÎÊ
+    // [ï¿½ï¿½ï¿½ï¿½Ä£Ê½] ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å±ï¿½ï¿½ï¿½ï¿½ï¿½Launcherï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     public static GameManager Instance;
 
-    [Header("ºËÐÄ×ÊÔ´ÒýÓÃ")]
-    public TextAsset idiomFile;          // ÍÏÈë chengyu.txt
-    public GameObject marblePrefab;      // ÍÏÈë Marble Prefab
-    public SplineContainer pathSpline;   // ÍÏÈë³¡¾°ÖÐµÄ¹ìµÀ¶ÔÏó (Path)
-    public GameObject spawnPointObj;        // ÍÏÈë³¡¾°ÖÐµÄ³öÉúµã¶ÔÏó (SpawnPoint)
+    [Header("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô´ï¿½ï¿½ï¿½ï¿½")]
+    public TextAsset idiomFile;          // ï¿½ï¿½ï¿½ï¿½ chengyu.txt
+    public GameObject marblePrefab;      // ï¿½ï¿½ï¿½ï¿½ Marble Prefab
+    public SplineContainer pathSpline;   // ï¿½ï¿½ï¿½ë³¡ï¿½ï¿½ï¿½ÐµÄ¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ (Path)
+    public GameObject spawnPointObj;        // ï¿½ï¿½ï¿½ë³¡ï¿½ï¿½ï¿½ÐµÄ³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ (SpawnPoint)
 
-    [Header("¹Ø¿¨ÓëÓÎÏ·²ÎÊý")]
-    public int idiomsPerLevel = 10;      // ±¾¹ØÊ¹ÓÃ¶àÉÙ¸ö³ÉÓï
-    public float marbleSpeed = 1f;       // Öé×ÓÁ´µÄ»ù´¡ÒÆ¶¯ËÙ¶È
-    public int initialMarbleCount = 20; // ÕâÒ»¹Ø×Ü¹²Éú³ÉµÄÖé×ÓÊýÁ¿
-    public float spawnAnimationSpeed = 0.1f; // Öé×ÓÉú³ÉµÄ¶¯»­ËÙ¶È£¬ÖµÔ½Ð¡Ô½¿ì
-    [SerializeField]private int currentchengyu = 0; // Ïû³ýµÄ³ÉÓï¸öÊý
+    [Header("ï¿½Ø¿ï¿½ï¿½ï¿½ï¿½ï¿½Ï·ï¿½ï¿½ï¿½ï¿½")]
+    public int idiomsPerLevel = 10;      // ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½Ã¶ï¿½ï¿½Ù¸ï¿½ï¿½ï¿½ï¿½ï¿½
+    public float marbleSpeed = 1f;       // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä»ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½ï¿½Ù¶ï¿½
+    public int initialMarbleCount = 20; // ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Ü¹ï¿½ï¿½ï¿½ï¿½Éµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    public float spawnAnimationSpeed = 0.1f; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÉµÄ¶ï¿½ï¿½ï¿½ï¿½Ù¶È£ï¿½ÖµÔ½Ð¡Ô½ï¿½ï¿½
+    [SerializeField] private int currentchengyu = 0; // ï¿½ï¿½ï¿½ï¿½ï¿½Ä³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    public GameObject gameOverPanel;
 
-    // [Êý¾Ý¹ÜÀíÆ÷] ÒýÓÃÎÒÃÇÉè¼ÆµÄ IdiomDataManager
+    // [ï¿½ï¿½ï¿½Ý¹ï¿½ï¿½ï¿½ï¿½ï¿½] ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æµï¿½ IdiomDataManager
     private IdiomDataManager _idiomData;
 
-    // [ºËÐÄÊý¾Ý½á¹¹] ´æ´¢³¡¾°ÖÐËùÓÐÖé×ÓµÄ¶¯Ì¬ÁÐ±í
-    [SerializeField]private List<Marble> marbleChain = new List<Marble>();
+    // [ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý½á¹¹] ï¿½æ´¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÓµÄ¶ï¿½Ì¬ï¿½Ð±ï¿½
+    [SerializeField] private List<Marble> marbleChain = new List<Marble>();
 
     void Awake()
     {
-        // ÉèÖÃµ¥Àý
+        // ï¿½ï¿½ï¿½Ãµï¿½ï¿½ï¿½
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
 
-        // [¹Ø¼ü³õÊ¼»¯] ÔÚÓÎÏ·¿ªÊ¼Ê±£¬´´½¨²¢³õÊ¼»¯Êý¾Ý¹ÜÀíÆ÷
+        // [ï¿½Ø¼ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½] ï¿½ï¿½ï¿½ï¿½Ï·ï¿½ï¿½Ê¼Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½Ý¹ï¿½ï¿½ï¿½ï¿½ï¿½
         _idiomData = new IdiomDataManager(idiomFile, idiomsPerLevel);
 
-        AudioManager.Instance.PlayBGM("BattleSouce"); // ²¥·ÅÓÎÏ·¿ªÊ¼ÒôÐ§
+        AudioManager.Instance.PlayBGM("BattleSouce"); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï·ï¿½ï¿½Ê¼ï¿½ï¿½Ð§
     }
 
     void Start()
     {
-        //³öÉúµã
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         if (spawnPointObj != null && pathSpline != null)
         {
             spawnPointObj.transform.position = pathSpline.Spline.EvaluatePosition(0f);
         }
 
-        // [¹Ø¼üÐÞ¸Ä] Ö±½ÓÒÔ¹ìµÀÆðµãÎª»ù×¼Éú³É
-        // [¹Ø¼üÐÞ¸Ä] Ê¹ÓÃÐ­³ÌÀ´¶¯Ì¬Éú³ÉÖé×Ó£¬±ÜÃâ¾ºÌ¬Ìõ¼þ²¢Ôö¼Ó¶¯»­Ð§¹û
+        // [ï¿½Ø¼ï¿½ï¿½Þ¸ï¿½] Ö±ï¿½ï¿½ï¿½Ô¹ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½×¼ï¿½ï¿½ï¿½ï¿½
+        // [ï¿½Ø¼ï¿½ï¿½Þ¸ï¿½] Ê¹ï¿½ï¿½Ð­ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó£ï¿½ï¿½ï¿½ï¿½â¾ºÌ¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¶ï¿½ï¿½ï¿½Ð§ï¿½ï¿½
         StartCoroutine(SpawnInitialChainCoroutine(initialMarbleCount));
     }
 
@@ -72,60 +73,60 @@ public class GameManager : MonoBehaviour
 
 
     /// <summary>
-    /// [ºËÐÄÒÆ¶¯Âß¼­] ÔÚ¹Ì¶¨µÄÊ±¼ä¼ä¸ôÖ´ÐÐ£¬ÒÔÊµÏÖÆ½»¬¡¢ÎïÀí¾«È·µÄÒÆ¶¯¡£
+    /// [ï¿½ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½ï¿½ß¼ï¿½] ï¿½Ú¹Ì¶ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½Ö´ï¿½Ð£ï¿½ï¿½ï¿½Êµï¿½ï¿½Æ½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È·ï¿½ï¿½ï¿½Æ¶ï¿½ï¿½ï¿½
     /// </summary>
     void FixedUpdate()
     {
         if (marbleChain.Count == 0) return;
 
-        // --- ²½Öè 1: ¼ÆËãÃ¿¸öÖé×ÓµÄ¡°ÀíÏëÂ·³Ì¾àÀë¡± (Target Distance) ---
+        // --- ï¿½ï¿½ï¿½ï¿½ 1: ï¿½ï¿½ï¿½ï¿½Ã¿ï¿½ï¿½ï¿½ï¿½ï¿½ÓµÄ¡ï¿½ï¿½ï¿½ï¿½ï¿½Â·ï¿½Ì¾ï¿½ï¿½ë¡± (Target Distance) ---
         List<float> targetDistances = CalculateTargetDistances();
 
-        // --- ²½Öè 2: ¸ù¾Ý¡°ÀíÏëÎ»ÖÃ¡±Çý¶¯ Rigidbody2D µÄËÙ¶È ---
+        // --- ï¿½ï¿½ï¿½ï¿½ 2: ï¿½ï¿½ï¿½Ý¡ï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½Ã¡ï¿½ï¿½ï¿½ï¿½ï¿½ Rigidbody2D ï¿½ï¿½ï¿½Ù¶ï¿½ ---
         DriveMarblesToTargets(targetDistances);
     }
 
     /// <summary>
-    /// ´¿ÊýÑ§¼ÆËã£¬µÃ³ö±¾Ö¡Ã¿¸öÖé×ÓÓ¦¸ÃÔÚµÄ¾«È·Â·³Ì¾àÀë¡£
+    /// ï¿½ï¿½ï¿½ï¿½Ñ§ï¿½ï¿½ï¿½ã£¬ï¿½Ã³ï¿½ï¿½ï¿½Ö¡Ã¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ÚµÄ¾ï¿½È·Â·ï¿½Ì¾ï¿½ï¿½ë¡£
     /// </summary>
     private List<float> CalculateTargetDistances()
     {
         List<float> distances = new List<float>(marbleChain.Count);
         if (marbleChain.Count == 0) return distances;
 
-        // Í·³µµÄÀíÏë¾àÀëÊÇµ±Ç°¾àÀë¼ÓÉÏÒ»Ð¡¶ÎÎ»ÒÆ
+        // Í·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Çµï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»Ð¡ï¿½ï¿½Î»ï¿½ï¿½
         distances.Add(marbleChain[0].distanceOnPath + marbleSpeed * Time.fixedDeltaTime);
 
-        // ¼ÆËãËùÓÐ¸úËæÕßµÄÀíÏë¾àÀë
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¸ï¿½ï¿½ï¿½ï¿½ßµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         for (int i = 1; i < marbleChain.Count; i++)
         {
             float targetSpacing = (marbleChain[i - 1].Diameter + marbleChain[i].Diameter) * 0.5f;
             float followerTargetDistance = distances[i - 1] - targetSpacing;
 
-            // Îª·ÀÖ¹¶¶¶¯£¬Ö»ÓÐµ±Öé×Ó±»À­¿ªÊ±²Å¸üÐÂËüµÄÄ¿±êÎ»ÖÃ
+            // Îªï¿½ï¿½Ö¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö»ï¿½Ðµï¿½ï¿½ï¿½ï¿½Ó±ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½Å¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿ï¿½ï¿½Î»ï¿½ï¿½
             distances.Add(Mathf.Max(followerTargetDistance, marbleChain[i].distanceOnPath));
         }
         return distances;
     }
 
     /// <summary>
-    /// ÎªÃ¿¸öÖé×Ó¸³ÓèÒ»¸öËÙ¶È£¬Ê¹ÆäÆ½»¬µØ³¯×Ô¼ºµÄÄ¿±êÎ»ÖÃÒÆ¶¯¡£
+    /// ÎªÃ¿ï¿½ï¿½ï¿½ï¿½ï¿½Ó¸ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Ù¶È£ï¿½Ê¹ï¿½ï¿½Æ½ï¿½ï¿½ï¿½Ø³ï¿½ï¿½Ô¼ï¿½ï¿½ï¿½Ä¿ï¿½ï¿½Î»ï¿½ï¿½ï¿½Æ¶ï¿½ï¿½ï¿½
     /// </summary>
     private void DriveMarblesToTargets(List<float> targetDistances)
     {
         for (int i = 0; i < marbleChain.Count; i++)
         {
             Marble marble = marbleChain[i];
-            marble.distanceOnPath = targetDistances[i]; // ¸üÐÂÖé×Ó×Ô¼ºµÄ¾àÀë¼ÇÂ¼
+            marble.distanceOnPath = targetDistances[i]; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¼ï¿½ï¿½Ä¾ï¿½ï¿½ï¿½ï¿½Â¼
 
             float posNormalized = pathSpline.Spline.ConvertIndexUnit(marble.distanceOnPath, PathIndexUnit.Distance, PathIndexUnit.Normalized);
             Vector3 targetPosition = pathSpline.EvaluatePosition(posNormalized);
 
-            // ºËÐÄ»ìºÏËã·¨£ºËÙ¶È = (Ä¿±êÎ»ÖÃ - µ±Ç°Î»ÖÃ) / Ê±¼ä
+            // ï¿½ï¿½ï¿½Ä»ï¿½ï¿½ï¿½ã·¨ï¿½ï¿½ï¿½Ù¶ï¿½ = (Ä¿ï¿½ï¿½Î»ï¿½ï¿½ - ï¿½ï¿½Ç°Î»ï¿½ï¿½) / Ê±ï¿½ï¿½
             Vector3 movementVector = (targetPosition - marble.transform.position);
             marble.GetComponent<Rigidbody2D>().velocity = movementVector / Time.fixedDeltaTime;
 
-            // ¸üÐÂÍâ¹Û
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             float distanceMoved = marble.GetComponent<Rigidbody2D>().velocity.magnitude * Time.fixedDeltaTime;
             marble.UpdateRotation(distanceMoved);
 
@@ -135,7 +136,7 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// [Éú³ÉÂß¼­] Ê¹ÓÃÐ­³Ì£¬ÔÚÓÎÏ·¿ªÊ¼Ê±Öð¸ö´´½¨Öé×Ó£¬ÐÎ³É¶¯»­Ð§¹û¡£
+    /// [ï¿½ï¿½ï¿½ï¿½ï¿½ß¼ï¿½] Ê¹ï¿½ï¿½Ð­ï¿½Ì£ï¿½ï¿½ï¿½ï¿½ï¿½Ï·ï¿½ï¿½Ê¼Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó£ï¿½ï¿½Î³É¶ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½
     /// </summary>
     private IEnumerator SpawnInitialChainCoroutine(int count)
     {
@@ -166,20 +167,20 @@ public class GameManager : MonoBehaviour
         marbleChain = tempChain;
         RecalculateAllDistances();
 
-        // Éú³ÉÍê±Ïºó£¬½øÐÐÒ»´ÎÈ«¾Ö¼ì²é£¬Ïû³ý³õÊ¼¾Í´æÔÚµÄ³ÉÓï
-        yield return new WaitForEndOfFrame(); // µÈ´ýÒ»Ö¡£¬È·±£ËùÓÐÎ»ÖÃ¶¼ÒÑ¸üÐÂ
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ïºó£¬½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½È«ï¿½Ö¼ï¿½é£¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½Í´ï¿½ï¿½ÚµÄ³ï¿½ï¿½ï¿½
+        yield return new WaitForEndOfFrame(); // ï¿½È´ï¿½Ò»Ö¡ï¿½ï¿½È·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½Ã¶ï¿½ï¿½Ñ¸ï¿½ï¿½ï¿½
         CheckAndEliminateAllMatches();
     }
 
 
 
     /// <summary>
-    /// ÔÚÖé×ÓÁ´·´×ªºó£¬ÖØÐÂ¼ÆËãËùÓÐÖé×ÓµÄÂ·³Ì¾àÀë£¬ÒÔÈ·±£Ë³ÐòÕýÈ·¡£
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Óµï¿½Â·ï¿½Ì¾ï¿½ï¿½ë£¬ï¿½ï¿½È·ï¿½ï¿½Ë³ï¿½ï¿½ï¿½ï¿½È·ï¿½ï¿½
     /// </summary>
     private void RecalculateAllDistances()
     {
         if (marbleChain.Count == 0) return;
-        float headDistance = marbleChain[0].distanceOnPath; // ÒÔ·´×ªºóµÄÍ·³µÎª»ù×¼
+        float headDistance = marbleChain[0].distanceOnPath; // ï¿½Ô·ï¿½×ªï¿½ï¿½ï¿½Í·ï¿½ï¿½Îªï¿½ï¿½×¼
 
         for (int i = 1; i < marbleChain.Count; i++)
         {
@@ -189,45 +190,45 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // ... (ÆäËû·½·¨£¬Èç InsertMarble, CheckForMatches µÈÔÚÏÂ·½) ...
+    // ... (ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ InsertMarble, CheckForMatches ï¿½ï¿½ï¿½ï¿½ï¿½Â·ï¿½) ...
 
     /// <summary>
-    /// ²åÈë·¢ÉäµÄÖé×Óµ½Á´ÌõÖÐ£¬Åö×²Ê±¸ù¾ÝX×ø±êÅÐ¶Ï²åÈëÇ°ºó£¬²¢×Ô¶¯¼ì²âÏû³ý³ÉÓï¡£
+    /// ï¿½ï¿½ï¿½ë·¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Óµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð£ï¿½ï¿½ï¿½×²Ê±ï¿½ï¿½ï¿½ï¿½Xï¿½ï¿½ï¿½ï¿½ï¿½Ð¶Ï²ï¿½ï¿½ï¿½Ç°ï¿½ó£¬²ï¿½ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¡£
     /// </summary>
-    /// <param name="collisionMarble">±»Åö×²µÄÁ´ÌõÖé×Ó</param>
-    /// <param name="shotMarble">·¢ÉäµÄÖé×Ó£¨ÒÑÊµÀý»¯£©</param>
+    /// <param name="collisionMarble">ï¿½ï¿½ï¿½ï¿½×²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½</param>
+    /// <param name="shotMarble">ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó£ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½</param>
     public void InsertMarble(Marble collisionMarble, Marble shotMarble)
     {
-        // »ñÈ¡Åö×²Öé×ÓÔÚÁ´±íÖÐµÄË÷Òý
+        // ï¿½ï¿½È¡ï¿½ï¿½×²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ðµï¿½ï¿½ï¿½ï¿½ï¿½
         int collisionIndex = marbleChain.IndexOf(collisionMarble);
-        if (collisionIndex == -1) return; // ·ÀÓùÐÔ¼ì²é
+        if (collisionIndex == -1) return; // ï¿½ï¿½ï¿½ï¿½ï¿½Ô¼ï¿½ï¿½
 
         GameObject newMarbleObj = Instantiate(marblePrefab);
         Marble newMarble = newMarbleObj.GetComponent<Marble>();
         newMarble.SetCharacter(shotMarble.GetCharacter());
 
-        // ÅÐ¶Ï²åÈëµ½Ç°Ãæ»¹ÊÇºóÃæ
+        // ï¿½Ð¶Ï²ï¿½ï¿½ëµ½Ç°ï¿½æ»¹ï¿½Çºï¿½ï¿½ï¿½
         int insertIndex = collisionIndex;
         if (newMarble.transform.position.x > collisionMarble.transform.position.x)
         {
-            // ·¢ÉäÖéÔÚÓÒ²à£¬²åÈëµ½ºóÃæ
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò²à£¬ï¿½ï¿½ï¿½ëµ½ï¿½ï¿½ï¿½ï¿½
             insertIndex = collisionIndex + 1;
         }
-        // ·ñÔò²åÈëµ½Ç°Ãæ£¨insertIndex = collisionIndex£©
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ëµ½Ç°ï¿½æ£¨insertIndex = collisionIndexï¿½ï¿½
 
-        // ½«·¢ÉäÖé×Ó²åÈëµ½Á´±í
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó²ï¿½ï¿½ëµ½ï¿½ï¿½ï¿½ï¿½
         marbleChain.Insert(insertIndex, newMarble);
 
-        // ²åÈëºóÁ¢¼´¼ì²â²¢Ïû³ýËùÓÐ³ÉÓï£¨Ö§³ÖÁ¬Ëø£©
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½â²¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð³ï¿½ï¿½ï£¨Ö§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         CheckAndEliminateAllMatches();
     }
 
 
     /// <summary>
-    /// ²åÈë·¢ÉäµÄÖé×Óµ½Á´ÌõÖÐ£¬ÅÐ¶Ï²åÈëµ½Ç°»¹ÊÇºó£¬²¢ÉèÖÃdistanceOnPath
+    /// ï¿½ï¿½ï¿½ë·¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Óµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð£ï¿½ï¿½Ð¶Ï²ï¿½ï¿½ëµ½Ç°ï¿½ï¿½ï¿½Çºó£¬²ï¿½ï¿½ï¿½ï¿½ï¿½distanceOnPath
     /// </summary>
-    /// <param name="collisionMarble">±»Åö×²µÄÁ´ÌõÖé×Ó</param>
-    /// <param name="shotMarble">·¢ÉäµÄÖé×Ó£¨ÒÑÊµÀý»¯£©</param>
+    /// <param name="collisionMarble">ï¿½ï¿½ï¿½ï¿½×²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½</param>
+    /// <param name="shotMarble">ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó£ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½</param>
     public void InsertMarble2(Marble collisionMarble, Marble shotMarble)
     {
         int collisionIndex = marbleChain.IndexOf(collisionMarble);
@@ -237,10 +238,10 @@ public class GameManager : MonoBehaviour
         Marble newMarble = newMarbleObj.GetComponent<Marble>();
         newMarble.SetCharacter(shotMarble.GetCharacter());
 
-        int insertIndex = collisionIndex; // Ä¬ÈÏ²åÔÚÇ°Ãæ
+        int insertIndex = collisionIndex; // Ä¬ï¿½Ï²ï¿½ï¿½ï¿½Ç°ï¿½ï¿½
         float insertDistance = collisionMarble.distanceOnPath;
 
-        // ÅÐ¶ÏÇ°Ò»¸öºÍºóÒ»¸öµÄ¾àÀë
+        // ï¿½Ð¶ï¿½Ç°Ò»ï¿½ï¿½ï¿½Íºï¿½Ò»ï¿½ï¿½ï¿½Ä¾ï¿½ï¿½ï¿½
         float distToPrev = float.MaxValue;
         float distToNext = float.MaxValue;
 
@@ -255,27 +256,27 @@ public class GameManager : MonoBehaviour
             distToNext = Vector2.Distance(shotMarble.transform.position, nextMarble.transform.position);
         }
 
-        // ÅÐ¶Ï²åÈëµ½Ç°»¹ÊÇºó
+        // ï¿½Ð¶Ï²ï¿½ï¿½ëµ½Ç°ï¿½ï¿½ï¿½Çºï¿½
         if (distToPrev < distToNext)
         {
-            // ²åµ½Ç°Ãæ
+            // ï¿½åµ½Ç°ï¿½ï¿½
             insertIndex = collisionIndex;
             if (collisionIndex > 0)
             {
-                // ÏßÐÔ²åÖµdistanceOnPath
+                // ï¿½ï¿½ï¿½Ô²ï¿½ÖµdistanceOnPath
                 float prevDist = marbleChain[collisionIndex - 1].distanceOnPath;
                 float currDist = collisionMarble.distanceOnPath;
                 insertDistance = (prevDist + currDist) * 0.5f;
             }
             else
             {
-                // ÊÇµÚÒ»¸öÇò£¬Ö±½ÓÓÃµ±Ç°ÇòµÄdistanceOnPath
+                // ï¿½Çµï¿½Ò»ï¿½ï¿½ï¿½ï¿½Ö±ï¿½ï¿½ï¿½Ãµï¿½Ç°ï¿½ï¿½ï¿½distanceOnPath
                 insertDistance = collisionMarble.distanceOnPath + shotMarble.Diameter;
             }
         }
         else
         {
-            // ²åµ½ºóÃæ
+            // ï¿½åµ½ï¿½ï¿½ï¿½ï¿½
             insertIndex = collisionIndex + 1;
             if (collisionIndex < marbleChain.Count - 1)
             {
@@ -285,26 +286,26 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                // ÊÇ×îºóÒ»¸öÇò£¬Ö±½ÓÓÃµ±Ç°ÇòµÄdistanceOnPath
+                // ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Ö±ï¿½ï¿½ï¿½Ãµï¿½Ç°ï¿½ï¿½ï¿½distanceOnPath
                 insertDistance = collisionMarble.distanceOnPath - shotMarble.Diameter;
             }
         }
 
-        // ÉèÖÃ·¢ÉäÖé×ÓµÄdistanceOnPath
+        // ï¿½ï¿½ï¿½Ã·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Óµï¿½distanceOnPath
         newMarble.distanceOnPath = insertDistance;
 
-        // ²åÈëµ½Á´±í
+        // ï¿½ï¿½ï¿½ëµ½ï¿½ï¿½ï¿½ï¿½
         marbleChain.Insert(insertIndex, newMarble);
 
-        // Á¢¼´Ïû³ý³ÉÓï
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         CheckAndEliminateAllMatches();
 
-        // ²åÈëºóÁ¢¼´¼ì²â²¢Ïû³ýËùÓÐ³ÉÓï£¨Ö§³ÖÁ¬Ëø£©
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½â²¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð³ï¿½ï¿½ï£¨Ö§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         CheckAndEliminateAllMatches();
     }
 
     /// <summary>
-    /// ¼ì²é²¢Ïû³ýËùÓÐ¿É×é³É³ÉÓïµÄÖé×Ó£¬Ö§³ÖÁ¬ËøÏû³ý
+    /// ï¿½ï¿½é²¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¿ï¿½ï¿½ï¿½É³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó£ï¿½Ö§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     /// </summary>
     public void CheckAndEliminateAllMatches()
     {
@@ -321,26 +322,26 @@ public class GameManager : MonoBehaviour
                 }
                 if (_idiomData.IsValidSessionIdiom(idiom))
                 {
-                    // Ïû³ý³ÉÓï
+                    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                     for (int k = 0; k < 4; k++)
                     {
-                        Destroy(marbleChain[i].gameObject); // Ã¿´Î¶¼ÒÆ³ýi£¬ÒòÎªºóÃæµÄ»áÇ°ÒÆ
+                        Destroy(marbleChain[i].gameObject); // Ã¿ï¿½Î¶ï¿½ï¿½Æ³ï¿½iï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½Ä»ï¿½Ç°ï¿½ï¿½
                         marbleChain.RemoveAt(i);
                     }
-                    currentchengyu++; // ³ÉÓï¼ÆÊýÔö¼Ó
+                    currentchengyu++; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                     foundMatch = true;
-                    break; // ÖØÐÂ´ÓÍ·¼ì²â£¬Ö§³ÖÁ¬Ëø
+                    break; // ï¿½ï¿½ï¿½Â´ï¿½Í·ï¿½ï¿½â£¬Ö§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                 }
             }
         } while (foundMatch);
     }
 
     /// <summary>
-    /// [Ïû³ýÂß¼­] ¼ì²éÖ¸¶¨Î»ÖÃ¸½½üÊÇ·ñÄÜ×é³É³ÉÓï
+    /// [ï¿½ï¿½ï¿½ï¿½ï¿½ß¼ï¿½] ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½Î»ï¿½Ã¸ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½É³ï¿½ï¿½ï¿½
     /// </summary>
     public void CheckForMatches(int insertionIndex)
     {
-        // ¼ì²éÒÔ²åÈëµãÎªÖÐÐÄµÄËùÓÐ4¸ö¿ÉÄÜµÄËÄ×Ö×éºÏ
+        // ï¿½ï¿½ï¿½ï¿½Ô²ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½Äµï¿½ï¿½ï¿½ï¿½ï¿½4ï¿½ï¿½ï¿½ï¿½ï¿½Üµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         for (int i = 0; i < 4; i++)
         {
             int startIndex = insertionIndex - i;
@@ -352,25 +353,25 @@ public class GameManager : MonoBehaviour
                 potentialIdiom += marbleChain[startIndex + j].GetCharacter();
             }
 
-            // [¹Ø¼ü] Ê¹ÓÃÊý¾Ý¹ÜÀíÆ÷À´ÑéÖ¤³ÉÓï
+            // [ï¿½Ø¼ï¿½] Ê¹ï¿½ï¿½ï¿½ï¿½ï¿½Ý¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¤ï¿½ï¿½ï¿½ï¿½
             if (_idiomData.IsValidSessionIdiom(potentialIdiom))
             {
-                Debug.Log("Æ¥Åä³É¹¦: " + potentialIdiom);
-                // ´ÓºóÍùÇ°É¾³ý£¬±ÜÃâË÷Òý´íÂÒ
+                Debug.Log("Æ¥ï¿½ï¿½É¹ï¿½: " + potentialIdiom);
+                // ï¿½Óºï¿½ï¿½ï¿½Ç°É¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                 for (int k = 0; k < 4; k++)
                 {
                     Destroy(marbleChain[startIndex + 3 - k].gameObject);
                     marbleChain.RemoveAt(startIndex + 3 - k);
                 }
 
-                // TODO: ÔÚ´Ë¿ÉÒÔÌí¼ÓÁ¬Ëø¼ì²é»òÎü¸½Ð§¹û
-                break; // ÕÒµ½Ò»¸ö¾ÍÏÈÍË³ö
+                // TODO: ï¿½Ú´Ë¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½
+                break; // ï¿½Òµï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë³ï¿½
             }
         }
     }
 
     /// <summary>
-    /// [¹«¹²API] Ìá¹©¸ø Launcher »ñÈ¡ÏÂÒ»¸öÒª·¢ÉäµÄ×Ö¡£
+    /// [ï¿½ï¿½ï¿½ï¿½API] ï¿½á¹©ï¿½ï¿½ Launcher ï¿½ï¿½È¡ï¿½ï¿½Ò»ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¡ï¿½
     /// </summary>
     public char GetNextCharForLauncher()
     {
@@ -378,9 +379,9 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// »ñÈ¡Ö¸¶¨Öé×ÓÔÚÁ´ÖÐµÄË÷ÒýÎ»ÖÃ
+    /// ï¿½ï¿½È¡Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ðµï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½
     /// </summary>
-    /// <param name="marble">Öé×Ó</param>
+    /// <param name="marble">ï¿½ï¿½ï¿½ï¿½</param>
     /// <returns></returns>
     public int GetMarbleIndex(Marble marble)
     {
@@ -389,52 +390,61 @@ public class GameManager : MonoBehaviour
 
 
     /// <summary>
-    /// ¼ÆËãÒ»¸öÊÀ½ç×ø±êµãÔÚ¹ìµÀÉÏµÄ×î½üµãµÄÂ·³Ì¾àÀë
+    /// ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú¹ï¿½ï¿½ï¿½Ïµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â·ï¿½Ì¾ï¿½ï¿½ï¿½
     /// </summary>
-    /// <param name="worldPosition">Òª²éÑ¯µÄÊÀ½ç×ø±ê</param>
-    /// <returns>´Ó¹ìµÀÆðµãµ½¸Ã×î½üµãµÄ¾àÀë</returns>
+    /// <param name="worldPosition">Òªï¿½ï¿½Ñ¯ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½</param>
+    /// <returns>ï¿½Ó¹ï¿½ï¿½ï¿½ï¿½ãµ½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¾ï¿½ï¿½ï¿½</returns>
     private float GetDistanceOnSpline(Vector3 worldPosition)
     {
-        // ²½Öè1: Ê¹ÓÃ SplineUtility.GetNearestPoint ÕÒµ½ÀëÊÀ½ç×ø±ê×î½üµÄµã¡£
-        // Õâ¸ö·½·¨»áÊä³öºÜ¶àÐÅÏ¢£¬ÎÒÃÇ×îÐèÒªµÄÊÇ 't'£¬Ëü´ú±í¹éÒ»»¯µÄÂ·¾¶Î»ÖÃ (0 to 1)¡£
+        // ï¿½ï¿½ï¿½ï¿½1: Ê¹ï¿½ï¿½ SplineUtility.GetNearestPoint ï¿½Òµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Äµã¡£
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ü¶ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ 't'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Â·ï¿½ï¿½Î»ï¿½ï¿½ (0 to 1)ï¿½ï¿½
         SplineUtility.GetNearestPoint(pathSpline.Spline, worldPosition, out var nearestPoint, out float t);
 
-        // ²½Öè2: ½«¹éÒ»»¯µÄÎ»ÖÃ 't' ×ª»»³ÉÊµ¼ÊµÄÂ·³Ì¾àÀë¡£
+        // ï¿½ï¿½ï¿½ï¿½2: ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½ 't' ×ªï¿½ï¿½ï¿½ï¿½Êµï¿½Êµï¿½Â·ï¿½Ì¾ï¿½ï¿½ë¡£
         return pathSpline.Spline.ConvertIndexUnit(t, PathIndexUnit.Normalized, PathIndexUnit.Distance);
     }
 
 
-    #region Ê¤¸º
+    #region Ê¤ï¿½ï¿½
     /// <summary>
-    /// ÓÎÏ·Ê¤Àû£ºËùÓÐÖé×Ó±»Ïû³ý»òÂú×ãÆäËüÊ¤ÀûÌõ¼þÊ±µ÷ÓÃ
+    /// ï¿½ï¿½Ï·Ê¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½
     /// </summary>
     public void GameWin()
     {
-        Debug.Log("ÓÎÏ·Ê¤Àû£¡");
-        // Í£Ö¹ËùÓÐÖé×ÓÒÆ¶¯
+        Debug.Log("ï¿½ï¿½Ï·Ê¤ï¿½ï¿½ï¿½ï¿½");
+        // Í£Ö¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½
         foreach (var marble in marbleChain)
         {
             var rb = marble.GetComponent<Rigidbody2D>();
             if (rb != null) rb.velocity = Vector2.zero;
         }
 
-        // ¿ÉÀ©Õ¹£º²¥·ÅÊ¤ÀûÒôÐ§¡¢µ¯´°¡¢ÇÐ»»³¡¾°µÈ
+        // ï¿½ï¿½ï¿½ï¿½Õ¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¤ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        AudioManager.Instance.StopBGM(); 
     }
 
     /// <summary>
-    /// ÓÎÏ·Ê§°Ü£ºÈçÖé×ÓÁ´Í·µ½´ïÖÕµãÊ±µ÷ÓÃ
+    /// ï¿½ï¿½Ï·Ê§ï¿½Ü£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í·ï¿½ï¿½ï¿½ï¿½ï¿½Õµï¿½Ê±ï¿½ï¿½ï¿½ï¿½
     /// </summary>
     public void GameOver()
     {
-        Debug.Log("ÓÎÏ·Ê§°Ü£¡");
-        // Í£Ö¹ËùÓÐÖé×ÓÒÆ¶¯
+        Debug.Log("ï¿½ï¿½Ï·Ê§ï¿½Ü£ï¿½");
+        ShowGameOverPanel();
+        // Í£Ö¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½
         foreach (var marble in marbleChain)
         {
             var rb = marble.GetComponent<Rigidbody2D>();
             if (rb != null) rb.velocity = Vector2.zero;
         }
-        // ¿ÉÀ©Õ¹£º²¥·ÅÊ§°ÜÒôÐ§¡¢µ¯´°¡¢ÇÐ»»³¡¾°µÈ
+        // ï¿½ï¿½ï¿½ï¿½Õ¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê§ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        AudioManager.Instance.StopBGM(); 
 
     }
+
+    public void ShowGameOverPanel()
+    {
+        gameOverPanel.SetActive(true);
+    }
+    
     #endregion
 }
